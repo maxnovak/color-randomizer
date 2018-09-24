@@ -5,6 +5,19 @@ module.exports = router.get('/',
 	function(request, response){
 		response.json( 
 		{ 
-			message : 'this is text', 
+			color: 'Crimson',
+			hex: '#DC143C',
+			rgb: 
+				{
+					red: 220,
+					green: 20,
+					blue: 60,
+				},
+			hsl: 
+			{
+				hue: 10,
+				saturation: 80,
+				lightness: 60,
+			},
 		});
 	});
