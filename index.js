@@ -20,6 +20,11 @@ app.use(bodyParser.json());
 
 app.use('/', router);
 
+app.post('/test', function(request, response){
+	console.log(request.body);      // your JSON
+	response.send(request.body);    // echo the result back
+});
+
 app.listen(port);
 
 console.log('Server is running');
