@@ -33,4 +33,20 @@ router.post('/',
 		});
 	});
 
+router.get('/random',
+	function(request, response){
+		Color.count()
+		.exec(function(error, count){
+			var random = Math.floor(Math.random() * count);
+
+			var query = Color.findOne().skip(random).select('-_id -__v');
+			query.exec(function(error, color) {
+				if (error) {
+					response.send(error);
+				}
+				response.json(color);
+			});
+		});
+	});
+
 module.exports = router;
