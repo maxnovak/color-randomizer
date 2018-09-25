@@ -18,4 +18,4 @@ var colorSchema = new Schema({
 	},
 });
 
-module.exports = mongoose.model('color', colorSchema);
+module.exports = mongoose.model('Color', colorSchema);
