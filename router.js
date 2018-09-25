@@ -3,7 +3,8 @@ var Color = require('./models/color');
 
 router.get('/', 
 	function(request, response){
-		Color.find(function(error, colors) {
+		var query = Color.find({}).select('-_id -__v');
+		query.exec(function(error, colors) {
 			if (error) {
 				response.send(error);
 			}
