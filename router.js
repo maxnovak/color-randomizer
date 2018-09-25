@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var Color = require('./models/color');
 
-module.exports = router.get('/', 
+router.get('/', 
 	function(request, response){
 		Color.find(function(error, colors) {
 			if (error) {
@@ -11,7 +11,7 @@ module.exports = router.get('/',
 		});
 	});
 
-module.exports = router.post('/',
+router.post('/',
 	function(request, response) {
 		var color = new Color();
 
@@ -31,3 +31,5 @@ module.exports = router.post('/',
 			response.json({ message : 'color added' });
 		});
 	});
+
+module.exports = router;
