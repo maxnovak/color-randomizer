@@ -18,7 +18,7 @@ app.all('/*', function(request, response, next){
 
 app.use(bodyParser.json());
 
-app.use('/', router);
+app.use('/api', router);
 
 app.post('/test', function(request, response){
 	console.log(request.body);      // your JSON
