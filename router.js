@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var Color = require('./models/color');
 
-router.get('/', 
+router.get('/color',
 	function(request, response){
 		var query = Color.find({}).select('-_id -__v');
 		query.exec(function(error, colors) {
@@ -12,7 +12,7 @@ router.get('/',
 		});
 	});
 
-router.post('/',
+router.post('/color',
 	function(request, response) {
 		var color = new Color();
 
@@ -33,7 +33,7 @@ router.post('/',
 		});
 	});
 
-router.get('/random',
+router.get('/color/random',
 	function(request, response){
 		Color.count()
 		.exec(function(error, count){
