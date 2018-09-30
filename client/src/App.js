@@ -23,8 +23,8 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <p style={{backgroundColor : this.state.response.hex}}>{this.state.response.name}</p>
+      <div className="App" style={{backgroundColor : this.state.response.hex}}>
+        <p>{this.state.response.name}</p>
       </div>
     );
   }
