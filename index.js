@@ -9,7 +9,7 @@ var router = require('./router.js');
 dotenv.config();
 var mongoUrl = process.env.MONGOLAB_URI;
 
-mongoose.connect(mongoUrl);
+mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
 app.all('/*', function(request, response, next){
 	console.log('Got a request');
