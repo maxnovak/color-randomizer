@@ -30,11 +30,10 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{backgroundColor : this.state.color.hex}}>
-        <p>{this.state.color.name} <br/>
-           {this.state.color.hex} <br/>
-           RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
-           HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
-        </p>
+        {this.state.color.name} <br/>
+        {this.state.color.hex} <br/>
+        RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
+        HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
       </div>
     );
   }
