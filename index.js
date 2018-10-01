@@ -12,7 +12,7 @@ var mongoUrl = process.env.MONGOLAB_URI;
 mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
 app.all('/*', function(request, response, next){
-	console.log('Got a request');
+	console.log('Got a request to: ' + request.url);
 	next();
 });
 
