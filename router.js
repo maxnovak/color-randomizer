@@ -35,7 +35,7 @@ router.post('/color',
 
 router.get('/color/random',
 	function(request, response){
-		Color.count()
+		Color.countDocuments()
 		.exec(function(error, count){
 			var random = Math.floor(Math.random() * count);
 
