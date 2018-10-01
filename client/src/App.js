@@ -39,14 +39,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App" style={{backgroundColor : this.state.color.hex}}>
-        <span>
-          <div className="NameOfColor"> {this.state.color.name} </div>
-          {this.state.color.hex} <br/>
-          RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
-          HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
-        </span>
-        <button onClick={this.getNewColor}>Get New Color</button>
+      <div>
+        <div className="App" style={{backgroundColor : this.state.color.hex}}>
+          <span>
+            <div className="NameOfColor"> {this.state.color.name} </div>
+            {this.state.color.hex} <br/>
+            RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
+            HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
+          </span>
+          <button onClick={this.getNewColor} style= {{backgroundColor : this.state.color.hex}}>Get New Color</button>
+        </div>
       </div>
     );
   }

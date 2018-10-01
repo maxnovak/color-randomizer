@@ -14,3 +14,14 @@ span {
   vertical-align: 200%;
   line-height: normal;
 }
+
+button {
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
