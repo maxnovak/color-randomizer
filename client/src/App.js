@@ -5,7 +5,8 @@ class App extends Component {
   state = {
     color: '',
     rgb: '',
-    hsl: ''
+    hsl: '',
+    textColor: 'black'
   };
 
   componentDidMount() {
@@ -15,6 +16,11 @@ class App extends Component {
         rgb : res.rgb,
         hsl : res.hsl
       }))
+      .then(
+        this.determineTextColor(this.state.rgb.red, this.state.rgb.green, this.state.rgb.blue)
+          .then(res => this.setState({
+            textColor : res
+          })))
       .catch(err => console.log(err));
   }
 
@@ -27,6 +33,13 @@ class App extends Component {
     return body;
   };
 
+  determineTextColor = async (red, green, blue) => {
+    var nThreshold = 105;
+    var bgDelta = (red * 0.299) + (green * 0.587) + (blue * 0.114);
+    console.log(bgDelta);
+    return (255 - bgDelta < nThreshold) ? 'black' : 'white';
+  }
+
   getNewColor = () => {
     this.callApi()
       .then(res => this.setState({
@@ -34,20 +47,25 @@ class App extends Component {
         rgb : res.rgb,
         hsl : res.hsl
       }))
+      .then(
+        this.determineTextColor(this.state.rgb.red, this.state.rgb.green, this.state.rgb.blue)
+          .then(res => this.setState({
+            textColor : res
+          })))
       .catch(err => console.log(err));
   }
 
   render() {
     return (
       <div>
-        <div className="App" style={{backgroundColor : this.state.color.hex}}>
+        <div className="App" style={{backgroundColor : this.state.color.hex, color : this.state.textColor}}>
           <span>
             <div className="NameOfColor"> {this.state.color.name} </div>
             {this.state.color.hex} <br/>
             RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
             HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
           </span>
-          <button onClick={this.getNewColor} style= {{backgroundColor : this.state.color.hex}}>Get New Color</button>
+          <button onClick={this.getNewColor} style= {{backgroundColor : this.state.color.hex, color : this.state.textColor}}>Get New Color</button>
         </div>
       </div>
     );
