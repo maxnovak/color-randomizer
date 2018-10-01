@@ -1,4 +1,8 @@
 .App {
   text-align: center;
   height:100vh;
+  font-family: 'Bai Jamjuree', sans-serif;
+}
+.NameOfColor {
+  font-family: 'Oswald', sans-serif;
 }
