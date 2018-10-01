@@ -27,6 +27,16 @@ class App extends Component {
     return body;
   };
 
+  getNewColor = () => {
+    this.callApi()
+      .then(res => this.setState({
+        color : res,
+        rgb : res.rgb,
+        hsl : res.hsl
+      }))
+      .catch(err => console.log(err));
+  }
+
   render() {
     return (
       <div className="App" style={{backgroundColor : this.state.color.hex}}>
@@ -36,6 +46,7 @@ class App extends Component {
           RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
           HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
         </span>
+        <button onClick={this.getNewColor}>Get New Color</button>
       </div>
     );
   }
