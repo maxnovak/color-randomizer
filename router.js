@@ -66,7 +66,7 @@ router.get('/color/random',
 
 router.delete('/color/:name', lookupColor,
 	function(request, response) {
-		console.log(request.color);
+		request.color.remove();
 		response.send('Delete request');
 	});
 module.exports = router;
