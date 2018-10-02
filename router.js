@@ -6,6 +6,8 @@ function lookupColor(request, response, next) {
 	Color.findOne({ $text: { $search: colorId }}, function(err, docs){
 		if (err) {
 			console.error(err);
+			response.statusCode = 500;
+			return response.json({ error : 'Something went wrong' })
 		}
 		if (!docs) {
 			response.statusCode = 404;
