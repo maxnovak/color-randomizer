@@ -49,4 +49,9 @@ router.get('/color/random',
 		});
 	});
 
+router.delete('/color/:id',
+	function(request, response) {
+		console.log(request.params.id);
+		response.send('Delete request');
+	});
 module.exports = router;
