@@ -2,7 +2,7 @@ var router = require('express').Router();
 var Color = require('./models/color');
 
 function lookupColor(request, response, next) {
-	var colorId = request.params.id;
+	var colorId = request.params.name;
 	Color.findOne({ $text: { $search: colorId }}, function(err, docs){
 		if (err) {
 			console.error(err);
@@ -64,7 +64,7 @@ router.get('/color/random',
 		});
 	});
 
-router.delete('/color/:id', lookupColor,
+router.delete('/color/:name', lookupColor,
 	function(request, response) {
 		console.log(request.color);
 		response.send('Delete request');
