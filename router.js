@@ -31,7 +31,12 @@ router.get('/color',
 
 router.get('/color/:name', lookupColor,
 	function(request, response) {
-		response.json(request.color);
+		response.json({
+			name: request.color.name,
+			hex: request.color.hex,
+			rgb: request.color.rgb,
+			hsl: request.color.hsl
+		});
 	});
 
 router.get('/color/random',
