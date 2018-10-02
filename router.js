@@ -60,7 +60,7 @@ router.get('/color/random',
 		});
 	});
 
-router.delete('/color/:id',
+router.delete('/color/:id', lookupColor,
 	function(request, response) {
 		console.log(request.params.id);
 		response.send('Delete request');
