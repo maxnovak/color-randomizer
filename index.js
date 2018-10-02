@@ -27,4 +27,4 @@ app.post('/test', function(request, response){
 
 app.listen(port);
 
-console.log('Server is running');
+console.log('Server is running at: ' + port);
