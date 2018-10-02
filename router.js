@@ -29,16 +29,6 @@ router.get('/color',
 		});
 	});
 
-router.get('/color/:name', lookupColor,
-	function(request, response) {
-		response.json({
-			name: request.color.name,
-			hex: request.color.hex,
-			rgb: request.color.rgb,
-			hsl: request.color.hsl
-		});
-	});
-
 router.get('/color/random',
 	function(request, response){
 		Color.countDocuments()
@@ -52,6 +42,16 @@ router.get('/color/random',
 				}
 				response.json(color);
 			});
+		});
+	});
+
+router.get('/color/:name', lookupColor,
+	function(request, response) {
+		response.json({
+			name: request.color.name,
+			hex: request.color.hex,
+			rgb: request.color.rgb,
+			hsl: request.color.hsl
 		});
 	});
 
