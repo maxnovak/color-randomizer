@@ -27,6 +27,11 @@ router.get('/color',
 		});
 	});
 
+router.get('/color/:name', lookupColor,
+	function(request, response) {
+		response.json(request.color);
+	});
+
 router.get('/color/random',
 	function(request, response){
 		Color.countDocuments()
