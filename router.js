@@ -74,4 +74,5 @@ router.delete('/color/:name', lookupColor,
 		request.color.remove();
 		response.send('Delete request');
 	});
+
 module.exports = router;
