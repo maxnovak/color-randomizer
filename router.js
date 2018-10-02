@@ -7,7 +7,11 @@ function lookupColor(request, response, next) {
 		if (err) {
 			console.error(err);
 		}
-		console.log(docs);
+		if (!docs) {
+			response.statusCode = 404;
+			return response.json({ error : 'Color not found' })
+		}
+		request.color = docs;
 		next();
 	});
 }
@@ -62,7 +66,7 @@ router.get('/color/random',
 
 router.delete('/color/:id', lookupColor,
 	function(request, response) {
-		console.log(request.params.id);
+		console.log(request.color);
 		response.send('Delete request');
 	});
 module.exports = router;
