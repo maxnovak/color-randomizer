@@ -3,7 +3,7 @@ var Color = require('./models/color');
 
 function lookupColor(request, response, next) {
 	var colorId = request.params.id;
-	Color.find({ $text: { $search: colorId }}, function(err, docs){
+	Color.findOne({ $text: { $search: colorId }}, function(err, docs){
 		if (err) {
 			console.error(err);
 		}
