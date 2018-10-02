@@ -7,7 +7,7 @@ var app = express();
 var router = require('./router.js');
 
 dotenv.config();
-var mongoUrl = process.env.MONGOLAB_URI;
+var mongoUrl = process.env.MONGODB_URI;
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
