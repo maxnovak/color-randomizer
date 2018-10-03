@@ -57,7 +57,14 @@ router.get('/color/:name', lookupColor,
 	});
 
 router.post('/color', [
-	check('name').not().isEmpty()
+	check('name').not().isEmpty(),
+	check('hex').not().isEmpty(),
+	check('rgb.red').not().isEmpty(),
+	check('rgb.green').not().isEmpty(),
+	check('rgb.blue').not().isEmpty(),
+	check('hsl.hue').not().isEmpty(),
+	check('hsl.saturation').not().isEmpty(),
+	check('hsl.lightness').not().isEmpty(),
 	], function(request, response) {
 		var errors = validationResult(request);
 		if (!errors.isEmpty()){
