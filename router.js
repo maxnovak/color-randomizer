@@ -1,4 +1,5 @@
 var router = require('express').Router();
+var { body, check, validationResult } = require('express-validator/check');
 var Color = require('./models/color');
 
 function lookupColor(request, response, next) {
@@ -55,8 +56,29 @@ router.get('/color/:name', lookupColor,
 		});
 	});
 
-router.post('/color',
-	function(request, response) {
+router.post('/color', [
+	check('name').not().isEmpty(),
+	body('name').custom(value => {
+		return Color.findOne({ $text: { $search: value }})
+			.then(color => {
+				if (color) {
+					return Promise.reject('That color name is already in use');
+				}
+			});
+	}),
+	check('hex').not().isEmpty(),
+	check('rgb.red').not().isEmpty(),
+	check('rgb.green').not().isEmpty(),
+	check('rgb.blue').not().isEmpty(),
+	check('hsl.hue').not().isEmpty(),
+	check('hsl.saturation').not().isEmpty(),
+	check('hsl.lightness').not().isEmpty(),
+	], function(request, response) {
+		var errors = validationResult(request);
+		if (!errors.isEmpty()){
+			response.statusCode = 400;
+			return response.json({errors : errors.array()});
+		}
 		var color = new Color();
 
 		color.name = request.body.name;
