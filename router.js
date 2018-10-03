@@ -1,4 +1,5 @@
 var router = require('express').Router();
+var { check, validationResult } = require('express-validator/check');
 var Color = require('./models/color');
 
 function lookupColor(request, response, next) {
@@ -55,8 +56,14 @@ router.get('/color/:name', lookupColor,
 		});
 	});
 
-router.post('/color',
-	function(request, response) {
+router.post('/color', [
+	check('name').not().isEmpty()
+	], function(request, response) {
+		var errors = validationResult(request);
+		if (!errors.isEmpty()){
+			response.statusCode = 400;
+			return response.json({errors : errors.array()});
+		}
 		var color = new Color();
 
 		color.name = request.body.name;
