@@ -1,5 +1,5 @@
 var router = require('express').Router();
-var { check, validationResult } = require('express-validator/check');
+var { body, check, validationResult } = require('express-validator/check');
 var Color = require('./models/color');
 
 function lookupColor(request, response, next) {
@@ -58,6 +58,14 @@ router.get('/color/:name', lookupColor,
 
 router.post('/color', [
 	check('name').not().isEmpty(),
+	body('name').custom(value => {
+		return Color.findOne({ $text: { $search: value }})
+			.then(color => {
+				if (color) {
+					return Promise.reject('That color name is already in use');
+				}
+			});
+	}),
 	check('hex').not().isEmpty(),
 	check('rgb.red').not().isEmpty(),
 	check('rgb.green').not().isEmpty(),
