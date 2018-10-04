@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import NewColorButton from './NewColorButton.js';
 
 class App extends Component {
   state = {
@@ -65,7 +66,9 @@ class App extends Component {
             RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
             HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
           </span>
-          <button onClick={this.getNewColor} style= {{backgroundColor : this.state.color.hex, color : this.state.textColor}}>Get New Color</button>
+          <NewColorButton
+            colorHex={this.state.color.hex}
+            textColor={this.state.textColor} />
         </div>
       </div>
     );
