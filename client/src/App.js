@@ -67,6 +67,7 @@ class App extends Component {
             HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
           </span>
           <NewColorButton
+            getNewColor={this.getNewColor}
             colorHex={this.state.color.hex}
             textColor={this.state.textColor} />
         </div>
