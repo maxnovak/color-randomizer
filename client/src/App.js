@@ -19,14 +19,12 @@ class App extends Component {
     const body = await response.json();
 
     if (response.status !== 200) throw Error(body.message);
-    console.log(body)
     return body;
   };
 
   determineTextColor = (red, green, blue) => {
     var nThreshold = 105;
     var bgDelta = (red * 0.299) + (green * 0.587) + (blue * 0.114);
-    console.log(bgDelta);
     return (255 - bgDelta < nThreshold) ? 'black' : 'white';
   }
 
