@@ -11,18 +11,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({
-        color : res,
-        rgb : res.rgb,
-        hsl : res.hsl
-      }))
-      .then(
-        this.determineTextColor(this.state.rgb.red, this.state.rgb.green, this.state.rgb.blue)
-          .then(res => this.setState({
-            textColor : res
-          })))
-      .catch(err => console.log(err));
+    this.getNewColor();
   }
 
   callApi = async () => {
