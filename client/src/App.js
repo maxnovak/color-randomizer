@@ -23,7 +23,7 @@ class App extends Component {
     return body;
   };
 
-  determineTextColor = async (red, green, blue) => {
+  determineTextColor = (red, green, blue) => {
     var nThreshold = 105;
     var bgDelta = (red * 0.299) + (green * 0.587) + (blue * 0.114);
     console.log(bgDelta);
@@ -32,16 +32,13 @@ class App extends Component {
 
   getNewColor = () => {
     this.callApi()
-      .then(res => this.setState({
+      .then(res =>
+        this.setState({
+        textColor : this.determineTextColor(res.rgb.red, res.rgb.green, res.rgb.blue),
         color : res,
         rgb : res.rgb,
         hsl : res.hsl
       }))
-      .then(
-        this.determineTextColor(this.state.rgb.red, this.state.rgb.green, this.state.rgb.blue)
-          .then(res => this.setState({
-            textColor : res
-          })))
       .catch(err => console.log(err));
   }
 
