@@ -12,6 +12,10 @@ To run React UI:
 Navigate to `client` folder and run:
 	`npm start`
 
+To run Python API:
+Navigate to `python_api` folder and run:
+	`flask run -p 8000`
+
 To run NodeJS API:
 Navigate to root directory and run:
 	`npm start`
