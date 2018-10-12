@@ -18,6 +18,6 @@ def get_data():
 
 @app.route("/api/color/random", methods=['GET'])
 def random_color():
-	color = mongo.db.colors.find_one({ "$text": { "$search": 'SkyBlue2' }}, {'_id':False, '__v':False})
+	color = mongo.db.colors.find_one(filter={ "$text": { "$search": 'SkyBlue2' }}, projection={'_id':False, '__v':False})
 	print(color, file=sys.stderr)
 	return json.dumps(color)
