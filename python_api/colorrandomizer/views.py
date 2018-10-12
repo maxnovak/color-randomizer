@@ -1,4 +1,4 @@
-from colorrandomizer import app
+from colorrandomizer import app, mongo
 from flask import request
 import sys, json
 
@@ -18,4 +18,6 @@ def get_data():
 
 @app.route("/api/color/random", methods=['GET'])
 def random_color():
-	return json.dumps({'name':'SkyBlue2','hex':'#87AFFF','rgb':{'red':135,'green':175,'blue':255},'hsl':{'hue':220,'saturation':100,'lightness':76}})
+	color = mongo.db.colors.find_one({ "$text": { "$search": 'SkyBlue2' }}, {'_id':False, '__v':False})
+	print(color, file=sys.stderr)
+	return json.dumps(color)
