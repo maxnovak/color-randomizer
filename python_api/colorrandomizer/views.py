@@ -15,3 +15,7 @@ def post_data(request):
 
 def get_data():
 	return "Got Data"
+
+@app.route("/api/color/random", methods=['GET'])
+def random_color():
+	return json.dumps({'name':'SkyBlue2','hex':'#87AFFF','rgb':{'red':135,'green':175,'blue':255},'hsl':{'hue':220,'saturation':100,'lightness':76}})
