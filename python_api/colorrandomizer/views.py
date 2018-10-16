@@ -23,3 +23,8 @@ def random_color():
 	color = mongo.db.colors.find_one(filter={ }, projection={'_id':False, '__v':False}, skip=randrange(document_count))
 	print(color, file=sys.stderr)
 	return json.dumps(color)
+
+@app.route("/api/color/<color_name>", methods=['GET'])
+def specfic_color(color_name):
+	color = mongo.db.colors.find_one(filter={"$text": { "$search": color_name }}, projection={'_id':False, '__v':False})
+	return json.dumps(color)
