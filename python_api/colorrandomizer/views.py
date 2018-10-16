@@ -12,6 +12,7 @@ def color():
 
 def post_data(request):
 	print(request.json, file=sys.stderr)
+	mongo.db.colors.insert_one(request.json)
 	return "Data successfully Posted"
 
 def get_all_colors():
