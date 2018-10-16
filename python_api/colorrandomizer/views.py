@@ -3,7 +3,7 @@ from flask import request
 import sys, json
 from random import *
 
-@app.route("/color", methods=['GET','POST'])
+@app.route("/api/color", methods=['GET','POST'])
 def color():
 	if request.method == 'POST':
 		return post_data(request)
