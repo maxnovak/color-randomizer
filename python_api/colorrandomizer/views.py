@@ -8,14 +8,15 @@ def color():
 	if request.method == 'POST':
 		return post_data(request)
 	else:
-		return get_data()
+		return get_all_colors()
 
 def post_data(request):
 	print(request.json, file=sys.stderr)
 	return "Data successfully Posted"
 
-def get_data():
-	return "Got Data"
+def get_all_colors():
+	colors = mongo.db.colors.find(projection={'_id':False, '__v':False})
+	return json.dumps(list(colors))
 
 @app.route("/api/color/random", methods=['GET'])
 def random_color():
