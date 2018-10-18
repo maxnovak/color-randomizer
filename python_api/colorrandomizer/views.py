@@ -29,17 +29,17 @@ def post_data(request):
 	print(request.json, file=sys.stderr)
 	try:
 		data = schema.validate(request.json)
-	except SchemaError:
-		print(SchemaError, file=sys.stderr)
-		return bad_request()
+	except SchemaError as err:
+		print(err, file=sys.stderr)
+		return bad_request(str(err))
 	mongo.db.colors.insert_one(request.json)
 	return "Data successfully Posted"
 
 @app.errorhandler(400)
-def bad_request():
+def bad_request(err):
 	message = {
 		'status':400,
-		'message': 'invalid request',
+		'message': err,
 	}
 	resp = json.dumps(message)
 
