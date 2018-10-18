@@ -2,6 +2,21 @@ from colorrandomizer import app, mongo
 from flask import request
 import sys, json
 from random import *
+from schema import Schema, And, Use, SchemaError
+
+schema = Schema({'name': Use(str, error='Invalid name'),
+	'hex': Use(str, error='Invalid Hex value'),
+	'rgb': {
+		'red': Use(int, error='Invalid value'),
+		'green': Use(int, error='Invalid value'),
+		'blue': Use(int, error='Invalid value')
+	},
+	'hsl': {
+		'hue': Use(int, error='Invalid value'),
+		'saturation': Use(int, error='Invalid value'),
+		'lightness': Use(int, error='Invalid value')
+	}
+	})
 
 @app.route("/api/color", methods=['GET','POST'])
 def color():
@@ -12,8 +27,23 @@ def color():
 
 def post_data(request):
 	print(request.json, file=sys.stderr)
+	try:
+		data = schema.validate(request.json)
+	except SchemaError as err:
+		print(err, file=sys.stderr)
+		return bad_request(str(err))
 	mongo.db.colors.insert_one(request.json)
 	return "Data successfully Posted"
+
+@app.errorhandler(400)
+def bad_request(err):
+	message = {
+		'status':400,
+		'message': err,
+	}
+	resp = json.dumps(message)
+
+	return resp
 
 def get_all_colors():
 	colors = mongo.db.colors.find(projection={'_id':False, '__v':False})
