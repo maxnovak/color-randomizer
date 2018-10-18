@@ -2,6 +2,21 @@ from colorrandomizer import app, mongo
 from flask import request
 import sys, json
 from random import *
+from schema import Schema, And, Use, Optional
+
+schema = Schema({'name': Use(str),
+	'hex': Use(str),
+	'rgb': {
+		'red': Use(int),
+		'green': Use(int),
+		'blue': Use(int)
+	},
+	'hsl': {
+		'hue': Use(int),
+		'saturation': Use(int),
+		'lightness': Use(int)
+	}
+	})
 
 @app.route("/api/color", methods=['GET','POST'])
 def color():
@@ -12,6 +27,7 @@ def color():
 
 def post_data(request):
 	print(request.json, file=sys.stderr)
+	data = schema.validate(request.json)
 	mongo.db.colors.insert_one(request.json)
 	return "Data successfully Posted"
 
