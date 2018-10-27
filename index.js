@@ -21,11 +21,6 @@ app.use(bodyParser.json());
 
 app.use('/api', router);
 
-app.post('/test', function(request, response){
-	console.log(request.body);      // your JSON
-	response.send(request.body);    // echo the result back
-});
-
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, 'client/build')));
 	app.get('*', function(req, res) {
