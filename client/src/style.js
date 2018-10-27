@@ -12,6 +12,7 @@ export default {
         'display': 'none'
     },
     'container': {
+        'color': 'black',
         'position': 'fixed',
         'top': 0,
         'left': 0,
