@@ -4,7 +4,6 @@ import style from './style.js';
 class Modal extends Component {
 	constructor(props) {
 		super(props);
-    console.log('construct it ');
     this.state = {
       style: style
     }

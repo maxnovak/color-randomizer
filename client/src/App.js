@@ -45,7 +45,6 @@ class App extends Component {
 
   showForm = () => {
     this.setState({visible: true});
-    console.log('clicked it');
   }
 
   closeModal = () => {
