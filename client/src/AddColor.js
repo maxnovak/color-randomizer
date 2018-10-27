@@ -8,7 +8,7 @@ class AddColor extends Component {
   render() {
     return (
       <button
-        class="AddColor"
+        className="AddColor"
         style=
         {{
           backgroundColor: this.props.colorHex,

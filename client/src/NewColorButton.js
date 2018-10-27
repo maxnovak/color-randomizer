@@ -8,7 +8,7 @@ class NewColorButton extends Component {
   render() {
     return (
       <button
-        class='NewColor'
+        className='NewColor'
         onClick={ this.props.getNewColor }
         style = {{
           backgroundColor: this.props.colorHex,
