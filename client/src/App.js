@@ -10,7 +10,7 @@ class App extends Component {
     rgb: '',
     hsl: '',
     textColor: 'black',
-    visible: 'none'
+    visible: false
   };
 
   componentDidMount() {
@@ -44,7 +44,14 @@ class App extends Component {
   }
 
   showForm = () => {
-    this.setState({visible: 'block'})
+    this.setState({visible: true});
+    console.log('clicked it');
+  }
+
+  closeModal = () => {
+    this.setState({
+        visible : false
+    });
   }
 
   render() {
@@ -59,6 +66,7 @@ class App extends Component {
           </span>
           <Modal
             visible={this.state.visible}
+            onClickAway={() => this.closeModal()}
           />
           <AddColor
             showForm={this.showForm}
