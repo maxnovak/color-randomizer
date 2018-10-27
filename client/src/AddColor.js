@@ -13,7 +13,11 @@ class AddColor extends Component {
         {{
           backgroundColor: this.props.colorHex,
           color: this.props.textColor
-        }}>
+        }}
+        onClick= {
+          this.props.showForm
+        }
+        >
       Add a Color
       </button>
 		)

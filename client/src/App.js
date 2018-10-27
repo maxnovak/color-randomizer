@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import './App.css';
 import NewColorButton from './NewColorButton.js';
 import AddColor from './AddColor.js'
+import Modal from './Modal.js'
 
 class App extends Component {
   state = {
     color: '',
     rgb: '',
     hsl: '',
-    textColor: 'black'
+    textColor: 'black',
+    visible: 'none'
   };
 
   componentDidMount() {
@@ -41,6 +43,10 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
+  showForm = () => {
+    this.setState({visible: 'block'})
+  }
+
   render() {
     return (
       <div>
@@ -51,7 +57,11 @@ class App extends Component {
             RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
             HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
           </span>
+          <Modal
+            visible={this.state.visible}
+          />
           <AddColor
+            showForm={this.showForm}
             colorHex={this.state.color.hex}
             textColor={this.state.textColor}
             />
