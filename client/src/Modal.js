@@ -27,8 +27,35 @@ class Modal extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  onSubmit = (event) => {
-    console.log(this.state);
+  onSubmit = async (event) => {
+    event.preventDefault();
+    const response = await fetch('api/color', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.name,
+        hex: this.state.hex,
+        rgb: {
+          red: this.state.red,
+          green: this.state.green,
+          blue: this.state.blue,
+        },
+        hsl: {
+          hue: this.state.hue,
+          saturation: this.state.saturation,
+          lightness: this.state.lightness,
+        }
+      })
+    }).then(response => {
+      return response;
+    }).catch(error => {
+      return error;
+    });
+    console.log(response);
+
     this.setState({
       name: '',
       hex: '',
@@ -40,7 +67,6 @@ class Modal extends Component {
       lightness: '',
       visible: false
     })
-    event.preventDefault();
   }
 
 	render() {
