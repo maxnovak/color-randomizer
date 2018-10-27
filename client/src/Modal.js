@@ -37,7 +37,8 @@ class Modal extends Component {
       blue: '',
       hue: '',
       saturation: '',
-      lightness: ''
+      lightness: '',
+      visible: false
     })
     event.preventDefault();
   }
