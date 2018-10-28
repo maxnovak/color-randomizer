@@ -71,8 +71,7 @@ class Modal extends Component {
 
 	render() {
 		return (
-      <div style={this.props.visible ? this.state.style.container : this.state.style.containerHidden}
-        className>
+      <div style={this.props.visible ? this.state.style.container : this.state.style.containerHidden}>
         <form style={this.state.visible ? this.state.style.panel : this.state.style.panelHidden}
             onSubmit={this.onSubmit}>
           <span className="Field">
