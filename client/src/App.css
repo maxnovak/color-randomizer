@@ -19,6 +19,17 @@
   bottom: 10px;
   left: 10px;
 }
+.Field {
+  display: block;
+  float: left;
+  clear: left;
+  padding: 10px 15vh;
+}
+.Submit {
+  float: right;
+  clear: left;
+  padding: 0 7vh 10px 0;
+}
 
 span {
   display: inline-block;
@@ -34,10 +45,13 @@ button {
   font-size: 16px;
 }
 
-form {
-  line-height: 10vh;
-  display: block;
-}
-
-input {
+input[type=submit] {
+  font-family: 'Bai Jamjuree', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: none;
+  background-color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
 }
