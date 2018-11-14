@@ -43,6 +43,12 @@ class Modal extends Component {
     })
   }
 
+  determineTextColor = (red, green, blue) => {
+    var nThreshold = 105;
+    var bgDelta = (red * 0.299) + (green * 0.587) + (blue * 0.114);
+    return (255 - bgDelta < nThreshold) ? 'black' : 'white';
+  }
+
   handleChange = (event) => {
     if (event.target.name === 'hex' && /^#[0-9A-F]{6}$/i.test(event.target.value)) {
       let panel = { ...this.state.style.panel }
@@ -53,9 +59,12 @@ class Modal extends Component {
           panel: panel
         }
       }))
-      this.setRGBFromHex(event.target.value);
+      this.setRGBFromHex(event.target.value)
+      let textColor = this.determineTextColor(this.state.red, this.state.green, this.state.blue);
+      this.setState({textColor : textColor})
     }
     this.setState({ [event.target.name]: event.target.value })
+
   }
 
   onSubmit = async (event) => {
