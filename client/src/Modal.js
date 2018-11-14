@@ -23,6 +23,17 @@ class Modal extends Component {
     });
   }
 
+  componentDidMount() {
+    let panel = { ...this.state.style.panel }
+    panel.backgroundColor = '#fff'
+    this.setState(prevousState => ({
+      style: {
+        ...prevousState.style,
+        panel: panel
+      }
+    }))
+  }
+
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }

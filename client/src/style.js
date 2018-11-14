@@ -35,7 +35,6 @@ export default {
         'zIndex': -1
     },
     'panel': {
-        'backgroundColor': '#fff',
         'borderRadius': '5px',
         'boxSizing': 'border-box',
         'boxShadow': '0 2px 4px rgba(0, 0, 0, 0.3)',
