@@ -13,7 +13,8 @@ class Modal extends Component {
       blue: '',
       hue: '',
       saturation: '',
-      lightness: ''
+      lightness: '',
+      textColor: 'black'
     }
 	}
 
@@ -92,7 +93,8 @@ class Modal extends Component {
 
 	render() {
 		return (
-      <div style={this.props.visible ? this.state.style.container : this.state.style.containerHidden}>
+      <div style={this.props.visible ? this.state.style.container : this.state.style.containerHidden}
+          className={this.state.textColor}>
         <form style={this.state.visible ? this.state.style.panel : this.state.style.panelHidden}
             onSubmit={this.onSubmit}>
           <span className="Field">
