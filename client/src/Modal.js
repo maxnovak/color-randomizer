@@ -59,8 +59,9 @@ class Modal extends Component {
           panel: panel
         }
       }))
-      this.setRGBFromHex(event.target.value)
+      this.setRGBFromHex(event.target.value);
       let textColor = this.determineTextColor(this.state.red, this.state.green, this.state.blue);
+      console.log(textColor);
       this.setState({textColor : textColor})
     }
     this.setState({ [event.target.name]: event.target.value })
@@ -105,7 +106,8 @@ class Modal extends Component {
       hue: '',
       saturation: '',
       lightness: '',
-      visible: false
+      visible: false,
+      textColor: 'black'
     })
   }
 
