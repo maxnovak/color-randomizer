@@ -35,6 +35,14 @@ class Modal extends Component {
     }))
   }
 
+  setRGBFromHex = (hexValue) => {
+    this.setState({
+      red : parseInt((hexValue).substring(1,3),16),
+      green : parseInt((hexValue).substring(3,5),16),
+      blue : parseInt((hexValue).substring(5,7),16)
+    })
+  }
+
   handleChange = (event) => {
     if (event.target.name === 'hex' && /^#[0-9A-F]{6}$/i.test(event.target.value)) {
       let panel = { ...this.state.style.panel }
@@ -45,6 +53,7 @@ class Modal extends Component {
           panel: panel
         }
       }))
+      this.setRGBFromHex(event.target.value);
     }
     this.setState({ [event.target.name]: event.target.value })
   }
