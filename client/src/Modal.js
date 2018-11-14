@@ -35,6 +35,16 @@ class Modal extends Component {
   }
 
   handleChange = (event) => {
+    if (event.target.name === 'hex') {
+      let panel = { ...this.state.style.panel }
+      panel.backgroundColor = event.target.value
+      this.setState(prevousState => ({
+        style: {
+          ...prevousState.style,
+          panel: panel
+        }
+      }))
+    }
     this.setState({ [event.target.name]: event.target.value })
   }
 
