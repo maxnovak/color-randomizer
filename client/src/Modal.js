@@ -102,6 +102,9 @@ class Modal extends Component {
       let textColor = this.determineTextColor(this.state.red, this.state.green, this.state.blue);
       this.setState({textColor : textColor})
     }
+    if(!/^#/i.test(event.target.value)){
+      event.target.value = '#' + event.target.value;
+    }
     this.setState({ [event.target.name]: event.target.value })
 
   }
