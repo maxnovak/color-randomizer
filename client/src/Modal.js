@@ -43,6 +43,44 @@ class Modal extends Component {
     })
   }
 
+  setHSLFromHex = (hexValue) => {
+    let red = parseInt((hexValue).substring(1,3),16)/255;
+    let green = parseInt((hexValue).substring(3,5),16)/255;
+    let blue = parseInt((hexValue).substring(5,7),16)/255;
+
+    let max = Math.max(red, green, blue);
+    let min = Math.min(red, green, blue);
+
+    let lightness = (min + max) / 2;
+    let hue, saturation;
+    if (max === min) {
+      hue = 0;
+      saturation = 0;
+    }
+    else {
+      let delta = max - min;
+      if (lightness > 0.5) {
+        saturation = delta / (2 - max - min);
+      }
+      else {
+        saturation = delta / (max + min);
+      }
+
+      switch(max){
+        case red: hue = (green - blue) / delta; break;
+        case green: hue = (blue - red) / delta + 2; break;
+        case blue: hue = (red - green) / delta + 4; break;
+      }
+      hue *= 60;
+    }
+
+    this.setState({
+      hue: hue > 0 ? hue : hue + 360,
+      saturation: Math.round(saturation * 100),
+      lightness: Math.round(lightness * 100)
+    })
+  }
+
   determineTextColor = (red, green, blue) => {
     var nThreshold = 105;
     var bgDelta = (red * 0.299) + (green * 0.587) + (blue * 0.114);
@@ -60,9 +98,12 @@ class Modal extends Component {
         }
       }))
       this.setRGBFromHex(event.target.value);
+      this.setHSLFromHex(event.target.value);
       let textColor = this.determineTextColor(this.state.red, this.state.green, this.state.blue);
-      console.log(textColor);
       this.setState({textColor : textColor})
+    }
+    if(!/^#/i.test(event.target.value)){
+      event.target.value = '#' + event.target.value;
     }
     this.setState({ [event.target.name]: event.target.value })
 
