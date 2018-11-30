@@ -100,7 +100,6 @@ class Modal extends Component {
       this.setRGBFromHex(event.target.value);
       this.setHSLFromHex(event.target.value);
       let textColor = this.determineTextColor(this.state.red, this.state.green, this.state.blue);
-      console.log(textColor);
       this.setState({textColor : textColor})
     }
     this.setState({ [event.target.name]: event.target.value })
