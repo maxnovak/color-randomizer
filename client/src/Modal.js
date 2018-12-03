@@ -149,7 +149,7 @@ class Modal extends Component {
       lightness: '',
       visible: false,
       textColor: 'black'
-    })
+    });
   }
 
 	render() {
