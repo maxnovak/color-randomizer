@@ -14,6 +14,7 @@ class Modal extends Component {
       hue: '',
       saturation: '',
       lightness: '',
+      visible: false,
       textColor: 'black'
     }
 	}
