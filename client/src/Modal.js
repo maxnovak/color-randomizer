@@ -102,7 +102,7 @@ class Modal extends Component {
       let textColor = this.determineTextColor(this.state.red, this.state.green, this.state.blue);
       this.setState({textColor : textColor})
     }
-    if(!/^#/i.test(event.target.value)){
+    if(event.target.name === 'hex' && !/^#/i.test(event.target.value)){
       event.target.value = '#' + event.target.value;
     }
     this.setState({ [event.target.name]: event.target.value })
@@ -111,7 +111,7 @@ class Modal extends Component {
 
   onSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch('api/color', {
+    const response = await fetch('/api/color', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -149,7 +149,7 @@ class Modal extends Component {
       lightness: '',
       visible: false,
       textColor: 'black'
-    })
+    });
   }
 
 	render() {
