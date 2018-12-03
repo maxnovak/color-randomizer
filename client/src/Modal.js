@@ -111,7 +111,7 @@ class Modal extends Component {
 
   onSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch('api/color', {
+    const response = await fetch('/api/color', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
