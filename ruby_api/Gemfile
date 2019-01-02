@@ -37,6 +37,7 @@ group :development do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'faker'
   gem 'database_cleaner'
+  gem 'mongo_mapper'
 end
 
 
