@@ -159,28 +159,44 @@ class Modal extends Component {
         <form style={this.state.visible ? this.state.style.panel : this.state.style.panelHidden}
             onSubmit={this.onSubmit}>
           <span className="Field" style={{color : this.state.textColor}}>
-            Color Name: <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
+            <label>Color Name:
+              <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Field" style={{color : this.state.textColor}}>
-            Hex Value: <input type="text" name="hex" value={this.state.hex} onChange={this.handleChange} />
+            <label>Hex Value:
+              <input type="text" name="hex" value={this.state.hex} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Field" style={{color : this.state.textColor}}>
-            Red Value: <input type="text" name="red" value={this.state.red} onChange={this.handleChange} />
+            <label>Red Value:
+              <input type="text" name="red" value={this.state.red} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Field" style={{color : this.state.textColor}}>
-            Green Value: <input type="text" name="green" value={this.state.green} onChange={this.handleChange} />
+            <label>Green Value:
+              <input type="text" name="green" value={this.state.green} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Field" style={{color : this.state.textColor}}>
-            Blue Value: <input type="text" name="blue" value={this.state.blue} onChange={this.handleChange} />
+            <label>Blue Value:
+              <input type="text" name="blue" value={this.state.blue} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Field" style={{color : this.state.textColor}}>
-            Hue Value: <input type="text" name="hue" value={this.state.hue} onChange={this.handleChange} />
+            <label>Hue Value:
+              <input type="text" name="hue" value={this.state.hue} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Field" style={{color : this.state.textColor}}>
-            Saturation Value: <input type="text" name="saturation" value={this.state.saturation} onChange={this.handleChange} />
+            <label>Saturation Value:
+              <input type="text" name="saturation" value={this.state.saturation} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Field" style={{color : this.state.textColor}}>
-            Lightness Value: <input type="text" name="lightness" value={this.state.lightness} onChange={this.handleChange} />
+            <label>Lightness Value:
+              <input type="text" name="lightness" value={this.state.lightness} onChange={this.handleChange} />
+            </label>
           </span>
           <span className="Submit" style={{color : this.state.textColor}}>
             <input type="submit" value="Submit" />
