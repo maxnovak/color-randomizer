@@ -1,4 +1,5 @@
 var express = require("express");
+var compression = require('compression');
 var dotenv = require('dotenv');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
@@ -18,6 +19,7 @@ app.all('/*', function(request, response, next){
 });
 
 app.use(bodyParser.json());
+app.use(compression());
 
 app.use('/api', router);
 
