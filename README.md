@@ -1,7 +1,7 @@
 # color-randomizer
 Restful API that will display random colors
 
-The goal of this project is to show the power of RESTful interfaces.  A RESTful API doesn't really care what it is implemented in it just cares about doing stateless operations.  To illustrate this the UI is all built in React and the backend has been implemented in multiple languages, which all behave the same way.  The data that is being used is stored in a simple MongoDB, which is hosted on [mLab](https://mlab.com/).
+The goal of this project is to show the power of RESTful interfaces.  A RESTful API doesn't really care what it is implemented in it just cares about doing stateless operations.  To illustrate this the UI is all built in React and the backend has been implemented in multiple languages, which all behave the same way.  The data that is being used is stored in a simple MongoDB, which is hosted on [Cloud MongoDB](https://www.mongodb.com/cloud).
 
 The first implementation, in NodeJS, of the API is at the root of the project, allowing easy Heroku deployment.  The Node version uses [Express](https://expressjs.com/) for the server & [Mongoose](https://mongoosejs.com/) for MongoDB connections.
 
@@ -21,7 +21,7 @@ Navigate to root directory and run:
 
 ##### To run React UI:
 Navigate to `client` folder and run:
-`npm start`
+`npm run start`
 
 ##### To run Python API:
 Navigate to `python_api` folder and run:
@@ -29,4 +29,4 @@ Navigate to `python_api` folder and run:
 
 ##### To run NodeJS API:
 Navigate to root directory and run:
-`npm start`
+`npm run start`
