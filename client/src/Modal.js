@@ -1,212 +1,182 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './style.js';
 
-class Modal extends Component {
-	constructor(props) {
-		super(props);
-    this.state = {
-      style: style,
-      name: '',
-      hex: '',
-      red: '',
-      green: '',
-      blue: '',
-      hue: '',
-      saturation: '',
-      lightness: '',
-      visible: false,
-      textColor: 'black'
+const Modal = (props) => {
+  const {
+    visible,
+    onClickAway,
+  } = props;
+
+  const [name, setName] = useState('');
+  const [hex, setHex] = useState('');
+  const [red, setRed] = useState('');
+  const [green, setGreen] = useState('');
+  const [blue, setBlue] = useState('');
+  const [hue, setHue] = useState('');
+  const [saturation, setSaturation] = useState('');
+  const [lightness, setLightness] = useState('');
+  const [textColor, setTextColor] = useState('black');
+  const [cssStyle, setCSSStyle] = useState(style);
+
+
+  useEffect(() => {
+    if (red !== '' && blue !== '' && green !== ''){
+      setTextColor(determineTextColor());
     }
-	}
+  }, [red, blue, green]);
 
-  componentWillReceiveProps({visible}) {
-    this.setState({
-        visible : visible
-    });
+  const setRGBFromHex = (hexValue) => {
+    setRed(parseInt((hexValue).substring(1,3),16));
+    setGreen(parseInt((hexValue).substring(3,5),16));
+    setBlue(parseInt((hexValue).substring(5,7),16));
   }
 
-  componentDidMount() {
-    let panel = { ...this.state.style.panel }
-    panel.backgroundColor = '#fff'
-    this.setState(prevousState => ({
-      style: {
-        ...prevousState.style,
-        panel: panel
-      }
-    }))
-  }
+  const setHSLFromHex = (hexValue) => {
+    const redFromHex = parseInt((hexValue).substring(1,3),16)/255;
+    const greenFromHex = parseInt((hexValue).substring(3,5),16)/255;
+    const blueFromHex = parseInt((hexValue).substring(5,7),16)/255;
 
-  setRGBFromHex = (hexValue) => {
-    this.setState({
-      red : parseInt((hexValue).substring(1,3),16),
-      green : parseInt((hexValue).substring(3,5),16),
-      blue : parseInt((hexValue).substring(5,7),16)
-    })
-  }
+    const max = Math.max(redFromHex, greenFromHex, blueFromHex);
+    const min = Math.min(redFromHex, greenFromHex, blueFromHex);
 
-  setHSLFromHex = (hexValue) => {
-    let red = parseInt((hexValue).substring(1,3),16)/255;
-    let green = parseInt((hexValue).substring(3,5),16)/255;
-    let blue = parseInt((hexValue).substring(5,7),16)/255;
-
-    let max = Math.max(red, green, blue);
-    let min = Math.min(red, green, blue);
-
-    let lightness = (min + max) / 2;
-    let hue, saturation;
+    const calculatedLightness = (min + max) / 2;
+    let calculatedHue, calculatedSaturation;
     if (max === min) {
-      hue = 0;
-      saturation = 0;
+      calculatedHue = 0;
+      calculatedSaturation = 0;
     }
     else {
       let delta = max - min;
-      if (lightness > 0.5) {
-        saturation = delta / (2 - max - min);
+      if (calculatedLightness > 0.5) {
+        calculatedSaturation = delta / (2 - max - min);
       }
       else {
-        saturation = delta / (max + min);
+        calculatedSaturation = delta / (max + min);
       }
 
       switch(max){
-        case red: hue = (green - blue) / delta; break;
-        case green: hue = (blue - red) / delta + 2; break;
-        case blue: hue = (red - green) / delta + 4; break;
+        case redFromHex: calculatedHue = (greenFromHex - blueFromHex) / delta; break;
+        case greenFromHex: calculatedHue = (blueFromHex - redFromHex) / delta + 2; break;
+        case blueFromHex: calculatedHue = (redFromHex - greenFromHex) / delta + 4; break;
       }
-      hue *= 60;
+      calculatedHue *= 60;
     }
 
-    this.setState({
-      hue: hue > 0 ? hue : hue + 360,
-      saturation: Math.round(saturation * 100),
-      lightness: Math.round(lightness * 100)
-    })
+
+    setHue(calculatedHue > 0 ? calculatedHue : calculatedHue + 360);
+    setSaturation(Math.round(calculatedSaturation * 100));
+    setLightness(Math.round(calculatedLightness * 100));
   }
 
-  determineTextColor = (red, green, blue) => {
+  const determineTextColor = () => {
     var nThreshold = 105;
     var bgDelta = (red * 0.299) + (green * 0.587) + (blue * 0.114);
     return (255 - bgDelta < nThreshold) ? 'black' : 'white';
   }
 
-  handleChange = (event) => {
-    if (event.target.name === 'hex' && /^#[0-9A-F]{6}$/i.test(event.target.value)) {
-      let panel = { ...this.state.style.panel }
-      panel.backgroundColor = event.target.value
-      this.setState(prevousState => ({
-        style: {
-          ...prevousState.style,
-          panel: panel
-        }
-      }))
-      this.setRGBFromHex(event.target.value);
-      this.setHSLFromHex(event.target.value);
-      let textColor = this.determineTextColor(this.state.red, this.state.green, this.state.blue);
-      this.setState({textColor : textColor})
+  const handleChange = async (hexValue) => {
+    if(!/^#/i.test(hexValue)){
+      hexValue = '#' + hexValue;
     }
-    if(event.target.name === 'hex' && !/^#/i.test(event.target.value)){
-      event.target.value = '#' + event.target.value;
-    }
-    this.setState({ [event.target.name]: event.target.value })
 
-  }
-
-  onSubmit = async (event) => {
-    event.preventDefault();
-    const response = await fetch('/api/color', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: this.state.name,
-        hex: this.state.hex,
-        rgb: {
-          red: this.state.red,
-          green: this.state.green,
-          blue: this.state.blue,
-        },
-        hsl: {
-          hue: this.state.hue,
-          saturation: this.state.saturation,
-          lightness: this.state.lightness,
-        }
+    if (/^#[0-9A-F]{6}$/i.test(hexValue)) {
+      let panel = { ...cssStyle.panel }
+      panel.backgroundColor = hexValue
+      setCSSStyle({
+        ...cssStyle,
+        panel: panel,
       })
-    }).then(response => {
-      return response;
-    }).catch(error => {
-      return error;
-    });
-    console.log(response);
 
-    this.setState({
-      name: '',
-      hex: '',
-      red: '',
-      green: '',
-      blue: '',
-      hue: '',
-      saturation: '',
-      lightness: '',
-      visible: false,
-      textColor: 'black'
-    });
+      setRGBFromHex(hexValue);
+      setHSLFromHex(hexValue);
+    }
+    setHex(hexValue);
   }
 
-	render() {
-		return (
-      <div style={this.props.visible ? this.state.style.container : this.state.style.containerHidden}>
-        <form style={this.state.visible ? this.state.style.panel : this.state.style.panelHidden}
-            onSubmit={this.onSubmit}>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Color Name:
-              <input type="text" name="name" value={this.state.name} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Hex Value:
-              <input type="text" name="hex" value={this.state.hex} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Red Value:
-              <input type="text" name="red" value={this.state.red} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Green Value:
-              <input type="text" name="green" value={this.state.green} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Blue Value:
-              <input type="text" name="blue" value={this.state.blue} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Hue Value:
-              <input type="text" name="hue" value={this.state.hue} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Saturation Value:
-              <input type="text" name="saturation" value={this.state.saturation} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Field" style={{color : this.state.textColor}}>
-            <label>Lightness Value:
-              <input type="text" name="lightness" value={this.state.lightness} onChange={this.handleChange} />
-            </label>
-          </span>
-          <span className="Submit" style={{color : this.state.textColor}}>
-            <input type="submit" value="Submit" />
-          </span>
-        </form>
-        <div style={this.state.visible ? this.state.style.mask : this.state.style.maskHidden} onClick={this.props.onClickAway ? this.props.onClickAway : null} />
-      </div>
-		)
-	}
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch('/api/color', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          hex,
+          rgb: {
+            red,
+            green,
+            blue,
+          },
+          hsl: {
+            hue,
+            saturation,
+            lightness,
+          }
+        })
+      });
+      console.info(response);
+    } catch(error) {
+      console.error(error);
+    };
 
-}
+    onClickAway();
+  }
+
+  return (
+    <div style={visible ? cssStyle.container : cssStyle.containerHidden}>
+      <form style={visible ? cssStyle.panel : cssStyle.panelHidden}
+          onSubmit={onSubmit}>
+        <span className="Field" style={{color : textColor}}>
+          <label>Color Name:
+            <input type="text" name="name" value={name} onChange={(event) => setName(event.target.value)}/>
+          </label>
+        </span>
+        <span className="Field" style={{color : textColor}}>
+          <label>Hex Value:
+            <input type="text" name="hex" value={hex} onChange={(event) => handleChange(event.target.value)} />
+          </label>
+        </span>
+        <span className="Field" style={{color : textColor}}>
+          <label>Red Value:
+            <input type="text" name="red" value={red} onChange={(event) => setRed(event.target.value)} />
+          </label>
+        </span>
+        <span className="Field" style={{color : textColor}}>
+          <label>Green Value:
+            <input type="text" name="green" value={green} onChange={(event) => setGreen(event.target.value)} />
+          </label>
+        </span>
+        <span className="Field" style={{color : textColor}}>
+          <label>Blue Value:
+            <input type="text" name="blue" value={blue} onChange={(event) => setBlue(event.target.value)} />
+          </label>
+        </span>
+        <span className="Field" style={{color : textColor}}>
+          <label>Hue Value:
+            <input type="text" name="hue" value={hue} onChange={(event) => setHue(event.target.value)} />
+          </label>
+        </span>
+        <span className="Field" style={{color : textColor}}>
+          <label>Saturation Value:
+            <input type="text" name="saturation" value={saturation} onChange={(event) => setSaturation(event.target.value)} />
+          </label>
+        </span>
+        <span className="Field" style={{color : textColor}}>
+          <label>Lightness Value:
+            <input type="text" name="lightness" value={lightness} onChange={(event) => setLightness(event.target.value)} />
+          </label>
+        </span>
+        <span className="Submit" style={{color : textColor}}>
+          <input type="submit" value="Submit" />
+        </span>
+      </form>
+      <div style={visible ? cssStyle.mask : cssStyle.maskHidden} onClick={onClickAway ? onClickAway : null} />
+    </div>
+  )
+
+};
 
 export default Modal;

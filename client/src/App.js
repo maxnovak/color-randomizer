@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import NewColorButton from './NewColorButton.js';
 import AddColor from './AddColor.js'
 import Modal from './Modal.js'
 
-class App extends Component {
-  state = {
-    color: '',
-    rgb: '',
-    hsl: '',
-    textColor: 'black',
-    visible: false
-  };
+const App = () => {
+  const [color, setColor] = useState({});
+  const [rgb, setRGB] = useState({});
+  const [hsl, setHSL] = useState({});
+  const [textColor, setTextColor] = useState('black');
+  const [visible, setVisible] = useState(false);
 
-  componentDidMount() {
-    this.getNewColor();
-  }
+  useEffect(() => {
+    getNewColor();
+  },[]);
 
-  callApi = async () => {
+  const callApi = async () => {
     const response = await fetch('/api/color/random');
     const body = await response.json();
 
@@ -25,61 +23,57 @@ class App extends Component {
     return body;
   };
 
-  determineTextColor = (red, green, blue) => {
+  const determineTextColor = (red, green, blue) => {
     var nThreshold = 105;
     var bgDelta = (red * 0.299) + (green * 0.587) + (blue * 0.114);
     return (255 - bgDelta < nThreshold) ? 'black' : 'white';
   }
 
-  getNewColor = () => {
-    this.callApi()
-      .then(res =>
-        this.setState({
-        textColor : this.determineTextColor(res.rgb.red, res.rgb.green, res.rgb.blue),
-        color : res,
-        rgb : res.rgb,
-        hsl : res.hsl
-      }))
+  const getNewColor = () => {
+    callApi()
+      .then(res => {
+        setColor(res);
+        setTextColor(determineTextColor(res.rgb.red, res.rgb.green, res.rgb.blue));
+        setRGB(res.rgb);
+        setHSL(res.hsl);
+      }
+      )
       .catch(err => console.log(err));
   }
 
-  showForm = () => {
-    this.setState({visible: true});
+  const showForm = () => {
+    setVisible(true);
   }
 
-  closeModal = () => {
-    this.setState({
-        visible : false
-    });
+  const closeModal = () => {
+    setVisible(false);
   }
 
-  render() {
-    return (
-      <div>
-        <div className="App" style={{backgroundColor : this.state.color.hex, color : this.state.textColor}}>
-          <span>
-            <div className="NameOfColor"> {this.state.color.name} </div>
-            {this.state.color.hex} <br/>
-            RGB: {this.state.rgb.red}, {this.state.rgb.green}, {this.state.rgb.blue} <br/>
-            HSL: {this.state.hsl.hue}, {this.state.hsl.saturation}, {this.state.hsl.lightness}
-          </span>
-          <Modal
-            visible={this.state.visible}
-            onClickAway={() => this.closeModal()}
+  return (
+    <div>
+      <div className="App" style={{backgroundColor : color.hex, color : textColor}}>
+        <span>
+          <div className="NameOfColor"> {color.name} </div>
+          {color.hex} <br/>
+          RGB: {rgb.red}, {rgb.green}, {rgb.blue} <br/>
+          HSL: {hsl.hue}, {hsl.saturation}, {hsl.lightness}
+        </span>
+        <Modal
+          visible={visible}
+          onClickAway={() => closeModal()}
+        />
+        <AddColor
+          showForm={showForm}
+          colorHex={color.hex}
+          textColor={textColor}
           />
-          <AddColor
-            showForm={this.showForm}
-            colorHex={this.state.color.hex}
-            textColor={this.state.textColor}
-            />
-          <NewColorButton
-            getNewColor={this.getNewColor}
-            colorHex={this.state.color.hex}
-            textColor={this.state.textColor} />
-        </div>
+        <NewColorButton
+          getNewColor={getNewColor}
+          colorHex={color.hex}
+          textColor={textColor} />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;
