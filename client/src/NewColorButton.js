@@ -1,19 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class NewColorButton extends Component {
-  render() {
-    return (
-      <button
-        className='NewColor'
-        onClick={ this.props.getNewColor }
-        style = {{
-          backgroundColor: this.props.colorHex,
-          color: this.props.textColor
-        }}>
-      Get New Color
-      </button>
-    )
-  }
-}
+const NewColorButton = (props) => {
+  const {
+    getNewColor,
+    colorHex,
+    textColor,
+  } = props;
+
+  return (
+    <button
+      className='NewColor'
+      onClick={ getNewColor }
+      style = {{
+        backgroundColor: colorHex,
+        color: textColor
+      }}>
+    Get New Color
+    </button>
+  )
+};
 
 export default NewColorButton;
