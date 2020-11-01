@@ -1,23 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class AddColor extends Component {
-  render() {
-    return (
-      <button
-        className="AddColor"
-        style=
-        {{
-          backgroundColor: this.props.colorHex,
-          color: this.props.textColor
-        }}
-        onClick= {
-          this.props.showForm
-        }
-        >
-      Add a Color
-      </button>
-		)
-	}
+const AddColor = (props) => {
+  const {
+    colorHex,
+    textColor,
+    showForm,
+  } = props;
+
+  return (
+    <button
+      className="AddColor"
+      style=
+      {{
+        backgroundColor: colorHex,
+        color: textColor
+      }}
+      onClick= {
+        showForm
+      }
+      >
+    Add a Color
+    </button>
+  )
 }
 
 export default AddColor;
