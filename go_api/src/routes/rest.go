@@ -9,6 +9,8 @@ func Run() {
 	router := gin.Default()
 
 	router.GET("/ping", Ping)
+	api := router.Group("/api")
+	AddColorRoutes(api)
 
 	router.Run()
 }
