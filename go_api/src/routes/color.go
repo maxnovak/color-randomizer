@@ -1,9 +1,12 @@
 package routes
 
 import (
+	"math/rand"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // AddColorRoutes adds routes to api related to colors
@@ -24,7 +27,11 @@ func getRandomColor(context *gin.Context) {
 		Lightness  int    `json:"lightness,omitempty"`
 		Hex        string `json:"hex,omitempty"`
 	}{}
-	db.Collection("colors").FindOne(context, bson.D{}).Decode(&result)
+	count, _ := db.Collection("colors").CountDocuments(context, bson.D{})
+
+	skipAmount := int64(rand.Intn(int(count)))
+
+	db.Collection("colors").FindOne(context, bson.D{}, &options.FindOneOptions{Skip: &skipAmount}).Decode(&result)
 
 	context.JSON(200, gin.H{
 		"name":       result.Name,
