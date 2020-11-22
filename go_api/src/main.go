@@ -6,9 +6,12 @@ import (
 	"go_api/src/database"
 	"go_api/src/routes"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load("../.env")
 
 	var (
 		mongoDBUser = flag.String(
