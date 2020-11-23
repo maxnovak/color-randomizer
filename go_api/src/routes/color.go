@@ -10,6 +10,28 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// RGB is the subdocument for red, green, and blue colors
+type RGB struct {
+	Red   int `bson:"red,omitempty"`
+	Green int `bson:"green,omitempty"`
+	Blue  int `bson:"blue,omitempty"`
+}
+
+// HSL is the subdocument for hue, saturation, & lightness colors
+type HSL struct {
+	Hue        float64 `bson:"hue,omitempty"`
+	Saturation float64 `bson:"saturation,omitempty"`
+	Lightness  float64 `bson:"lightness,omitempty"`
+}
+
+// Color is the document shape for the mongodb
+type Color struct {
+	Name string `bson:"name,omitempty"`
+	HSL  HSL    `bson:"hsl,omitempty"`
+	RGB  RGB    `bson:"rgb,omitempty" `
+	Hex  string `bson:"hex,omitempty"`
+}
+
 // AddColorRoutes adds routes to api related to colors
 func AddColorRoutes(routerGroup *gin.RouterGroup) {
 	routerGroup.GET(("/color/"), getAllColors)
@@ -19,16 +41,7 @@ func AddColorRoutes(routerGroup *gin.RouterGroup) {
 func getRandomColor(context *gin.Context) {
 	db := context.MustGet("db").(*mongo.Database)
 
-	result := struct {
-		Name       string `json:"name,omitempty"`
-		Red        int    `json:"red,omitempty"`
-		Green      int    `json:"green,omitempty"`
-		Blue       int    `json:"blue,omitempty"`
-		Hue        int    `json:"hue,omitempty"`
-		Saturation int    `json:"saturation,omitempty"`
-		Lightness  int    `json:"lightness,omitempty"`
-		Hex        string `json:"hex,omitempty"`
-	}{}
+	result := Color{}
 	count, _ := db.Collection("colors").CountDocuments(context, bson.D{})
 
 	skipAmount := int64(rand.Intn(int(count)))
@@ -37,12 +50,12 @@ func getRandomColor(context *gin.Context) {
 
 	context.JSON(200, gin.H{
 		"name":       result.Name,
-		"red":        result.Red,
-		"green":      result.Green,
-		"blue":       result.Blue,
-		"hue":        result.Hue,
-		"saturation": result.Saturation,
-		"lightness":  result.Lightness,
+		"red":        result.RGB.Red,
+		"green":      result.RGB.Green,
+		"blue":       result.RGB.Blue,
+		"hue":        result.HSL.Hue,
+		"saturation": result.HSL.Saturation,
+		"lightness":  result.HSL.Lightness,
 		"hex":        result.Hex,
 	})
 }
@@ -56,44 +69,26 @@ func getNamedColor(context *gin.Context) {
 
 	db := context.MustGet("db").(*mongo.Database)
 
-	result := struct {
-		Name       string `json:"name,omitempty"`
-		Red        int    `json:"red,omitempty"`
-		Green      int    `json:"green,omitempty"`
-		Blue       int    `json:"blue,omitempty"`
-		Hue        int    `json:"hue,omitempty"`
-		Saturation int    `json:"saturation,omitempty"`
-		Lightness  int    `json:"lightness,omitempty"`
-		Hex        string `json:"hex,omitempty"`
-	}{}
+	result := Color{}
 	query := bson.M{
 		"name": name,
 	}
 	db.Collection("colors").FindOne(context, query).Decode(&result)
 	context.JSON(200, gin.H{
 		"name":       result.Name,
-		"red":        result.Red,
-		"green":      result.Green,
-		"blue":       result.Blue,
-		"hue":        result.Hue,
-		"saturation": result.Saturation,
-		"lightness":  result.Lightness,
+		"red":        result.RGB.Red,
+		"green":      result.RGB.Green,
+		"blue":       result.RGB.Blue,
+		"hue":        result.HSL.Hue,
+		"saturation": result.HSL.Saturation,
+		"lightness":  result.HSL.Lightness,
 		"hex":        result.Hex,
 	})
 }
 
 func getAllColors(context *gin.Context) {
 	db := context.MustGet("db").(*mongo.Database)
-	result := []struct {
-		Name       string `json:"name,omitempty"`
-		Red        int    `json:"red,omitempty"`
-		Green      int    `json:"green,omitempty"`
-		Blue       int    `json:"blue,omitempty"`
-		Hue        int    `json:"hue,omitempty"`
-		Saturation int    `json:"saturation,omitempty"`
-		Lightness  int    `json:"lightness,omitempty"`
-		Hex        string `json:"hex,omitempty"`
-	}{}
+	result := []Color{}
 
 	cursor, err := db.Collection("colors").Find(context, bson.D{})
 	if err != nil {
