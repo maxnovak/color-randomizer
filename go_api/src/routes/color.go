@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"math/rand"
 
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,7 @@ import (
 
 // AddColorRoutes adds routes to api related to colors
 func AddColorRoutes(routerGroup *gin.RouterGroup) {
+	routerGroup.GET(("/color/"), getAllColors)
 	routerGroup.GET("/color/:name", getNamedColor)
 }
 
@@ -78,4 +80,31 @@ func getNamedColor(context *gin.Context) {
 		"lightness":  result.Lightness,
 		"hex":        result.Hex,
 	})
+}
+
+func getAllColors(context *gin.Context) {
+	db := context.MustGet("db").(*mongo.Database)
+	result := []struct {
+		Name       string `json:"name,omitempty"`
+		Red        int    `json:"red,omitempty"`
+		Green      int    `json:"green,omitempty"`
+		Blue       int    `json:"blue,omitempty"`
+		Hue        int    `json:"hue,omitempty"`
+		Saturation int    `json:"saturation,omitempty"`
+		Lightness  int    `json:"lightness,omitempty"`
+		Hex        string `json:"hex,omitempty"`
+	}{}
+
+	cursor, err := db.Collection("colors").Find(context, bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = cursor.All(context, &result)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	context.JSON(200,
+		result,
+	)
 }
