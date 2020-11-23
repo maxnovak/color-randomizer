@@ -36,6 +36,7 @@ type Color struct {
 func AddColorRoutes(routerGroup *gin.RouterGroup) {
 	routerGroup.GET(("/color/"), getAllColors)
 	routerGroup.GET("/color/:name", getNamedColor)
+	routerGroup.POST("/color/", addNewColor)
 }
 
 func getRandomColor(context *gin.Context) {
@@ -102,4 +103,19 @@ func getAllColors(context *gin.Context) {
 	context.JSON(200,
 		result,
 	)
+}
+
+func addNewColor(context *gin.Context) {
+	db := context.MustGet("db").(*mongo.Database)
+	var data Color
+	err := context.BindJSON(&data)
+	if err != nil {
+		log.Fatal(err)
+	}
+	insertResult, err := db.Collection("colors").InsertOne(context, data)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Inserted new color with ID: ", insertResult.InsertedID)
 }
